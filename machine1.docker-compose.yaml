@@ -1,0 +1,17 @@
+version: "3.2"
+
+services:
+  galactic-string:
+    container_name: galactic-string
+    image: ros:galactic
+    command: |
+      ros2 topic pub /hello std_msgs/msg/String '{data: hello world}'
+    network_mode: "host"
+  zenoh-bridge:
+    container_name: zenoh-bridge
+    image: vinnnyr/zenoh-plugin-dds:latest
+    command: "-e tcp/18.188.199.251:7447 --fwd-discovery"
+    network_mode: "host"
+    restart: "always"
+    depends_on: 
+      - galactic-string
